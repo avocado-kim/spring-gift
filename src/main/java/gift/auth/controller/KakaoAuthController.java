@@ -1,8 +1,8 @@
 package gift.auth.controller;
 import gift.auth.dto.TokenResponse;
-import gift.auth.service.JwtProvider;
-import gift.auth.service.KakaoLoginPort;
-import gift.auth.service.KakaoLoginProperties;
+import gift.auth.jwt.JwtProvider;
+import gift.auth.client.KakaoLoginPort;
+import gift.auth.client.KakaoLoginProperties;
 
 import gift.member.domain.Member;
 import gift.member.repository.MemberRepository;

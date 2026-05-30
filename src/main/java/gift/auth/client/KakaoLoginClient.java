@@ -1,4 +1,4 @@
-package gift.auth.service;
+package gift.auth.client;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;

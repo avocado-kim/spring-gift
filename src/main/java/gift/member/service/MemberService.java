@@ -3,7 +3,7 @@ import gift.member.domain.Member;
 import gift.member.dto.MemberRequest;
 import gift.member.repository.MemberRepository;
 
-import gift.auth.service.JwtProvider;
+import gift.auth.jwt.JwtProvider;
 import gift.auth.dto.TokenResponse;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package gift.auth.service;
+package gift.auth.resolver;
 
 import gift.member.domain.Member;
 import org.springframework.core.MethodParameter;

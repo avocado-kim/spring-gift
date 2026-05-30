@@ -1,4 +1,4 @@
-package gift.auth.service;
+package gift.auth.client;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

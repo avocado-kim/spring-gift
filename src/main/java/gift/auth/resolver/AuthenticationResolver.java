@@ -1,5 +1,6 @@
-package gift.auth.service;
+package gift.auth.resolver;
 
+import gift.auth.jwt.JwtProvider;
 import gift.member.domain.Member;
 import gift.member.repository.MemberRepository;
 import org.springframework.stereotype.Component;
