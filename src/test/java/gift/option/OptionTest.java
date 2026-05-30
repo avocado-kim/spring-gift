@@ -36,4 +36,16 @@ class OptionTest {
         assertThatThrownBy(() -> option.subtractQuantity(11))
             .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    void subtractQuantity_0_예외() {
+        assertThatThrownBy(() -> option.subtractQuantity(0))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void subtractQuantity_음수_예외() {
+        assertThatThrownBy(() -> option.subtractQuantity(-1))
+            .isInstanceOf(IllegalArgumentException.class);
+    }
 }
