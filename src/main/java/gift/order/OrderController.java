@@ -26,7 +26,7 @@ public class OrderController {
     private final WishRepository wishRepository;
     private final MemberRepository memberRepository;
     private final AuthenticationResolver authenticationResolver;
-    private final KakaoMessageClient kakaoMessageClient;
+    private final KakaoMessagePort kakaoMessagePort;
 
     public OrderController(
         OrderRepository orderRepository,
@@ -34,14 +34,14 @@ public class OrderController {
         WishRepository wishRepository,
         MemberRepository memberRepository,
         AuthenticationResolver authenticationResolver,
-        KakaoMessageClient kakaoMessageClient
+        KakaoMessagePort kakaoMessagePort
     ) {
         this.orderRepository = orderRepository;
         this.optionRepository = optionRepository;
         this.wishRepository = wishRepository;
         this.memberRepository = memberRepository;
         this.authenticationResolver = authenticationResolver;
-        this.kakaoMessageClient = kakaoMessageClient;
+        this.kakaoMessagePort = kakaoMessagePort;
     }
 
     @GetMapping
@@ -107,7 +107,7 @@ public class OrderController {
         }
         try {
             var product = option.getProduct();
-            kakaoMessageClient.sendToMe(member.getKakaoAccessToken(), order, product);
+            kakaoMessagePort.sendToMe(member.getKakaoAccessToken(), order, product);
         } catch (Exception ignored) {
         }
     }
