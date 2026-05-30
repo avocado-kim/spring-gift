@@ -12,4 +12,6 @@ public interface WishRepository extends JpaRepository<Wish, Long> {
     Optional<Wish> findByMemberIdAndProductId(Long memberId, Long productId);
 
     void deleteByMemberIdAndProductId(Long memberId, Long productId);
+
+    boolean existsByProductId(Long productId);
 }
