@@ -21,18 +21,18 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping(path = "/api/auth/kakao")
 public class KakaoAuthController {
     private final KakaoLoginProperties properties;
-    private final KakaoLoginClient kakaoLoginClient;
+    private final KakaoLoginPort kakaoLoginPort;
     private final MemberRepository memberRepository;
     private final JwtProvider jwtProvider;
 
     public KakaoAuthController(
         KakaoLoginProperties properties,
-        KakaoLoginClient kakaoLoginClient,
+        KakaoLoginPort kakaoLoginPort,
         MemberRepository memberRepository,
         JwtProvider jwtProvider
     ) {
         this.properties = properties;
-        this.kakaoLoginClient = kakaoLoginClient;
+        this.kakaoLoginPort = kakaoLoginPort;
         this.memberRepository = memberRepository;
         this.jwtProvider = jwtProvider;
     }
@@ -54,8 +54,8 @@ public class KakaoAuthController {
 
     @GetMapping(path = "/callback")
     public ResponseEntity<TokenResponse> callback(@RequestParam("code") String code) {
-        KakaoLoginClient.KakaoTokenResponse kakaoToken = kakaoLoginClient.requestAccessToken(code);
-        KakaoLoginClient.KakaoUserResponse kakaoUser = kakaoLoginClient.requestUserInfo(kakaoToken.accessToken());
+        KakaoLoginPort.KakaoTokenResponse kakaoToken = kakaoLoginPort.requestAccessToken(code);
+        KakaoLoginPort.KakaoUserResponse kakaoUser = kakaoLoginPort.requestUserInfo(kakaoToken.accessToken());
         String email = kakaoUser.email();
 
         Member member = memberRepository.findByEmail(email)
