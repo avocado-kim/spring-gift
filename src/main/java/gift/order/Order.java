@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +26,7 @@ public class Order {
     private Long memberId;
     private int quantity;
     private String message;
+    @CreationTimestamp
     private LocalDateTime orderDateTime;
 
     protected Order() {
@@ -35,7 +37,6 @@ public class Order {
         this.memberId = memberId;
         this.quantity = quantity;
         this.message = message;
-        this.orderDateTime = LocalDateTime.now();
     }
 
     public Long getId() {
