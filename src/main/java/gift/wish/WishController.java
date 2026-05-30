@@ -31,12 +31,9 @@ public class WishController {
 
     @PostMapping
     public ResponseEntity<WishResponse> addWish(Member member, @Valid @RequestBody WishRequest request) {
-        var result = wishService.addWish(member.getId(), request.productId());
-        if (result.isNew()) {
-            return ResponseEntity.created(URI.create("/api/wishes/" + result.wish().id()))
-                .body(result.wish());
-        }
-        return ResponseEntity.ok(result.wish());
+        WishResponse response = wishService.addWish(member.getId(), request.productId());
+        return ResponseEntity.created(URI.create("/api/wishes/" + response.id()))
+            .body(response);
     }
 
     @DeleteMapping("/{id}")

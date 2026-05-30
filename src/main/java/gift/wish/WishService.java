@@ -5,7 +5,9 @@ import gift.product.Product;
 import gift.product.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.NoSuchElementException;
 
@@ -23,15 +25,13 @@ public class WishService {
         return wishRepository.findByMemberId(memberId, pageable).map(WishResponse::from);
     }
 
-    public WishAddResult addWish(Long memberId, Long productId) {
+    public WishResponse addWish(Long memberId, Long productId) {
         Product product = productRepository.findById(productId)
             .orElseThrow(() -> new NoSuchElementException("Product not found."));
-        return wishRepository.findByMemberIdAndProductId(memberId, productId)
-            .map(existing -> new WishAddResult(WishResponse.from(existing), false))
-            .orElseGet(() -> {
-                Wish saved = wishRepository.save(new Wish(memberId, product));
-                return new WishAddResult(WishResponse.from(saved), true);
-            });
+        if (wishRepository.findByMemberIdAndProductId(memberId, productId).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 추가된 상품입니다.");
+        }
+        return WishResponse.from(wishRepository.save(new Wish(memberId, product)));
     }
 
     public void removeWish(Long memberId, Long wishId) {
@@ -41,8 +41,5 @@ public class WishService {
             throw new ForbiddenException();
         }
         wishRepository.delete(wish);
-    }
-
-    public record WishAddResult(WishResponse wish, boolean isNew) {
     }
 }
