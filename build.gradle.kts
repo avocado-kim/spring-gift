@@ -34,7 +34,7 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api")
     runtimeOnly("io.jsonwebtoken:jjwt-impl")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson")
-    runtimeOnly("com.h2database:h2")
+    testRuntimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
