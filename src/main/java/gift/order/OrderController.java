@@ -1,10 +1,6 @@
 package gift.order;
 
 import gift.auth.AuthenticationResolver;
-import gift.member.Member;
-import gift.member.MemberRepository;
-import gift.option.Option;
-import gift.option.OptionRepository;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -20,24 +16,12 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
-    private final OrderRepository orderRepository;
-    private final OptionRepository optionRepository;
-    private final MemberRepository memberRepository;
+    private final OrderService orderService;
     private final AuthenticationResolver authenticationResolver;
-    private final KakaoMessagePort kakaoMessagePort;
 
-    public OrderController(
-        OrderRepository orderRepository,
-        OptionRepository optionRepository,
-        MemberRepository memberRepository,
-        AuthenticationResolver authenticationResolver,
-        KakaoMessagePort kakaoMessagePort
-    ) {
-        this.orderRepository = orderRepository;
-        this.optionRepository = optionRepository;
-        this.memberRepository = memberRepository;
+    public OrderController(OrderService orderService, AuthenticationResolver authenticationResolver) {
+        this.orderService = orderService;
         this.authenticationResolver = authenticationResolver;
-        this.kakaoMessagePort = kakaoMessagePort;
     }
 
     @GetMapping
@@ -45,13 +29,11 @@ public class OrderController {
         @RequestHeader("Authorization") String authorization,
         Pageable pageable
     ) {
-        // auth check
         var member = authenticationResolver.extractMember(authorization);
         if (member == null) {
             return ResponseEntity.status(401).build();
         }
-        var orders = orderRepository.findByMemberId(member.getId(), pageable).map(OrderResponse::from);
-        return ResponseEntity.ok(orders);
+        return ResponseEntity.ok(orderService.getOrders(member.getId(), pageable));
     }
 
     @PostMapping
@@ -59,44 +41,12 @@ public class OrderController {
         @RequestHeader("Authorization") String authorization,
         @Valid @RequestBody OrderRequest request
     ) {
-        // auth check
         var member = authenticationResolver.extractMember(authorization);
         if (member == null) {
             return ResponseEntity.status(401).build();
         }
-
-        // validate option
-        var option = optionRepository.findById(request.optionId()).orElse(null);
-        if (option == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        // subtract stock
-        option.subtractQuantity(request.quantity());
-        optionRepository.save(option);
-
-        // deduct points
-        var price = option.getProduct().getPrice() * request.quantity();
-        member.deductPoint(price);
-        memberRepository.save(member);
-
-        // save order
-        var saved = orderRepository.save(new Order(option, member.getId(), request.quantity(), request.message()));
-
-        // best-effort kakao notification
-        sendKakaoMessageIfPossible(member, saved, option);
-        return ResponseEntity.created(URI.create("/api/orders/" + saved.getId()))
-            .body(OrderResponse.from(saved));
-    }
-
-    private void sendKakaoMessageIfPossible(Member member, Order order, Option option) {
-        if (member.getKakaoAccessToken() == null) {
-            return;
-        }
-        try {
-            var product = option.getProduct();
-            kakaoMessagePort.sendToMe(member.getKakaoAccessToken(), order, product);
-        } catch (Exception ignored) {
-        }
+        var saved = orderService.createOrder(member, request.optionId(), request.quantity(), request.message());
+        return ResponseEntity.created(URI.create("/api/orders/" + saved.id()))
+            .body(saved);
     }
 }
