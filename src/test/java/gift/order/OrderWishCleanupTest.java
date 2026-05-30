@@ -42,15 +42,15 @@ class OrderWishCleanupTest {
         member = memberRepository.save(new Member("wish_cleanup@example.com", "pw"));
         member.chargePoint(10000);
         memberRepository.save(member);
-        wishRepository.save(new Wish(member.getId(), product));
+        wishRepository.save(new Wish(member, product));
     }
 
     @Test
     void 주문_완료_후_위시리스트_삭제() {
-        assertThat(wishRepository.findByMemberIdAndProductId(member.getId(), product.getId())).isPresent();
+        assertThat(wishRepository.findByMember_IdAndProductId(member.getId(), product.getId())).isPresent();
 
         orderService.createOrder(member, option.getId(), 1, null);
 
-        assertThat(wishRepository.findByMemberIdAndProductId(member.getId(), product.getId())).isEmpty();
+        assertThat(wishRepository.findByMember_IdAndProductId(member.getId(), product.getId())).isEmpty();
     }
 }

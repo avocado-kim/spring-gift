@@ -35,7 +35,7 @@ public class OrderService {
     }
 
     public Page<OrderResponse> getOrders(Long memberId, Pageable pageable) {
-        return orderRepository.findByMemberId(memberId, pageable).map(OrderResponse::from);
+        return orderRepository.findByMember_Id(memberId, pageable).map(OrderResponse::from);
     }
 
     @Transactional
@@ -50,9 +50,9 @@ public class OrderService {
         member.deductPoint(price);
         memberRepository.save(member);
 
-        Order saved = orderRepository.save(new Order(option, member.getId(), quantity, message));
+        Order saved = orderRepository.save(new Order(option, member, quantity, message));
 
-        wishRepository.deleteByMemberIdAndProductId(member.getId(), option.getProduct().getId());
+        wishRepository.deleteByMember_IdAndProductId(member.getId(), option.getProduct().getId());
 
         sendKakaoMessageIfPossible(member, saved, option);
         return OrderResponse.from(saved);

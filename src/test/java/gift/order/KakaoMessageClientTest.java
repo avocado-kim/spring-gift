@@ -2,6 +2,7 @@ package gift.order;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gift.category.Category;
+import gift.member.Member;
 import gift.option.Option;
 import gift.product.Product;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,8 @@ class KakaoMessageClientTest {
         Category category = new Category("테스트", "#000", "url", null);
         Product product = new Product("상품 \"특별\" 에디션", 1000, "url", category);
         Option option = new Option(product, "기본", 10);
-        Order order = new Order(option, 1L, 1, "메시지");
+        Member member = new Member("test@test.com", "pw");
+        Order order = new Order(option, member, 1, "메시지");
 
         String json = client.buildTemplate(order, product);
 

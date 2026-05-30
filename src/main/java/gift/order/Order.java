@@ -1,5 +1,6 @@
 package gift.order;
 
+import gift.member.Member;
 import gift.option.Option;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,19 +23,23 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "option_id")
     private Option option;
-    // primitive FK
-    private Long memberId;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     private int quantity;
     private String message;
+
     @CreationTimestamp
     private LocalDateTime orderDateTime;
 
     protected Order() {
     }
 
-    public Order(Option option, Long memberId, int quantity, String message) {
+    public Order(Option option, Member member, int quantity, String message) {
         this.option = option;
-        this.memberId = memberId;
+        this.member = member;
         this.quantity = quantity;
         this.message = message;
     }
@@ -47,8 +52,12 @@ public class Order {
         return option;
     }
 
+    public Member getMember() {
+        return member;
+    }
+
     public Long getMemberId() {
-        return memberId;
+        return member.getId();
     }
 
     public int getQuantity() {
