@@ -1,5 +1,6 @@
 package gift.wish;
 
+import gift.member.Member;
 import gift.product.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,8 +14,10 @@ public class Wish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // primitive FK - no entity reference
-    private Long memberId;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -23,8 +26,8 @@ public class Wish {
     protected Wish() {
     }
 
-    public Wish(Long memberId, Product product) {
-        this.memberId = memberId;
+    public Wish(Member member, Product product) {
+        this.member = member;
         this.product = product;
     }
 
@@ -32,8 +35,12 @@ public class Wish {
         return id;
     }
 
+    public Member getMember() {
+        return member;
+    }
+
     public Long getMemberId() {
-        return memberId;
+        return member.getId();
     }
 
     public Product getProduct() {

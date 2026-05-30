@@ -32,7 +32,7 @@ class ProductDeleteTest {
         Category category = categoryRepository.save(new Category("상품삭제_테스트카테고리", "#fff", "http://test.url", null));
         Product product = productRepository.save(new Product("삭제테스트상품", 1000, "http://test.url", category));
         Member member = memberRepository.save(new Member("prod_delete@example.com", "pw"));
-        wishRepository.save(new Wish(member.getId(), product));
+        wishRepository.save(new Wish(member, product));
 
         mockMvc.perform(delete("/api/products/" + product.getId()))
             .andExpect(status().isBadRequest());

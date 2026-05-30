@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface WishRepository extends JpaRepository<Wish, Long> {
-    Page<Wish> findByMemberId(Long memberId, Pageable pageable);
+    Page<Wish> findByMember_Id(Long memberId, Pageable pageable);
 
-    Optional<Wish> findByMemberIdAndProductId(Long memberId, Long productId);
+    Optional<Wish> findByMember_IdAndProductId(Long memberId, Long productId);
 
-    void deleteByMemberIdAndProductId(Long memberId, Long productId);
+    void deleteByMember_IdAndProductId(Long memberId, Long productId);
 
     boolean existsByProductId(Long productId);
 }
