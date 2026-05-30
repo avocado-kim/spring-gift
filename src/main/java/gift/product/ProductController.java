@@ -2,6 +2,8 @@ package gift.product;
 
 import gift.category.Category;
 import gift.category.CategoryRepository;
+import gift.order.OrderRepository;
+import gift.wish.WishRepository;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,10 +25,19 @@ import java.util.List;
 public class ProductController {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final WishRepository wishRepository;
+    private final OrderRepository orderRepository;
 
-    public ProductController(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductController(
+        ProductRepository productRepository,
+        CategoryRepository categoryRepository,
+        WishRepository wishRepository,
+        OrderRepository orderRepository
+    ) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.wishRepository = wishRepository;
+        this.orderRepository = orderRepository;
     }
 
     @GetMapping
@@ -82,6 +93,9 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        if (wishRepository.existsByProductId(id) || orderRepository.existsByProductId(id)) {
+            throw new IllegalArgumentException("위시리스트나 주문이 있는 상품은 삭제할 수 없습니다.");
+        }
         productRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
