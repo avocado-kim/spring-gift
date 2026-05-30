@@ -1,6 +1,8 @@
 package gift.order;
+import gift.order.domain.Order;
+import gift.order.repository.OrderRepository;
 
-import gift.member.Member;
+import gift.member.domain.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

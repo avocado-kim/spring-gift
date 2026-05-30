@@ -1,13 +1,14 @@
 package gift.order;
+import gift.order.service.OrderService;
 
-import gift.category.Category;
-import gift.category.CategoryRepository;
-import gift.member.Member;
-import gift.member.MemberRepository;
-import gift.option.Option;
-import gift.option.OptionRepository;
-import gift.product.Product;
-import gift.product.ProductRepository;
+import gift.category.domain.Category;
+import gift.category.repository.CategoryRepository;
+import gift.member.domain.Member;
+import gift.member.repository.MemberRepository;
+import gift.option.domain.Option;
+import gift.option.repository.OptionRepository;
+import gift.product.domain.Product;
+import gift.product.repository.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

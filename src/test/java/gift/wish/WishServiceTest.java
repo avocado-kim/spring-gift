@@ -1,11 +1,13 @@
 package gift.wish;
+import gift.wish.repository.WishRepository;
+import gift.wish.service.WishService;
 
-import gift.category.Category;
-import gift.category.CategoryRepository;
-import gift.member.Member;
-import gift.member.MemberRepository;
-import gift.product.Product;
-import gift.product.ProductRepository;
+import gift.category.domain.Category;
+import gift.category.repository.CategoryRepository;
+import gift.member.domain.Member;
+import gift.member.repository.MemberRepository;
+import gift.product.domain.Product;
+import gift.product.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

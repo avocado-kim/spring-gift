@@ -1,11 +1,13 @@
 package gift.product;
+import gift.product.domain.Product;
+import gift.product.repository.ProductRepository;
 
-import gift.category.Category;
-import gift.category.CategoryRepository;
-import gift.member.Member;
-import gift.member.MemberRepository;
-import gift.wish.Wish;
-import gift.wish.WishRepository;
+import gift.category.domain.Category;
+import gift.category.repository.CategoryRepository;
+import gift.member.domain.Member;
+import gift.member.repository.MemberRepository;
+import gift.wish.domain.Wish;
+import gift.wish.repository.WishRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

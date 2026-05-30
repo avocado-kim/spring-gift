@@ -1,4 +1,5 @@
 package gift.member;
+import gift.member.domain.Member;
 
 import org.junit.jupiter.api.Test;
 

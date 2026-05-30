@@ -1,4 +1,5 @@
 package gift.option;
+import gift.option.domain.OptionNameValidator;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

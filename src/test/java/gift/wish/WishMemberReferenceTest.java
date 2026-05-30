@@ -1,6 +1,8 @@
 package gift.wish;
+import gift.wish.domain.Wish;
+import gift.wish.repository.WishRepository;
 
-import gift.member.Member;
+import gift.member.domain.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

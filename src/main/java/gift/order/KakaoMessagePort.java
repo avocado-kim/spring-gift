@@ -1,7 +1,0 @@
-package gift.order;
-
-import gift.product.Product;
-
-public interface KakaoMessagePort {
-    void sendToMe(String accessToken, Order order, Product product);
-}

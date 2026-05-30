@@ -1,10 +1,12 @@
-package gift.order;
+package gift.order.service;
+import gift.order.domain.Order;
+import gift.order.service.KakaoMessageClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gift.category.Category;
-import gift.member.Member;
-import gift.option.Option;
-import gift.product.Product;
+import gift.category.domain.Category;
+import gift.member.domain.Member;
+import gift.option.domain.Option;
+import gift.product.domain.Product;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestClient;
 

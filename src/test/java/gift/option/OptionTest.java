@@ -1,7 +1,8 @@
 package gift.option;
+import gift.option.domain.Option;
 
-import gift.category.Category;
-import gift.product.Product;
+import gift.category.domain.Category;
+import gift.product.domain.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
