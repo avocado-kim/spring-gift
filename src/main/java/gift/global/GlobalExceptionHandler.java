@@ -1,5 +1,6 @@
 package gift.global;
 
+import jakarta.persistence.OptimisticLockException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,5 +23,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<String> handleForbidden(ForbiddenException e) {
         return ResponseEntity.status(403).build();
+    }
+
+    @ExceptionHandler(OptimisticLockException.class)
+    public ResponseEntity<String> handleOptimisticLock(OptimisticLockException e) {
+        return ResponseEntity.status(409).body("주문이 집중되고 있습니다. 다시 시도해주세요.");
     }
 }
