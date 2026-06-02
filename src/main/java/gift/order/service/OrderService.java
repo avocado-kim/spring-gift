@@ -55,17 +55,14 @@ public class OrderService {
 
         wishRepository.deleteByMember_IdAndProductId(memberId, option.getProduct().getId());
 
-        sendKakaoMessageIfPossible(member, saved, option);
+        sendKakaoMessage(member, saved, option);
         return OrderResponse.from(saved);
     }
 
-    private void sendKakaoMessageIfPossible(Member member, Order order, Option option) {
+    private void sendKakaoMessage(Member member, Order order, Option option) {
         if (member.getKakaoAccessToken() == null) {
             return;
         }
-        try {
-            kakaoMessagePort.sendToMe(member.getKakaoAccessToken(), order, option.getProduct());
-        } catch (Exception ignored) {
-        }
+        kakaoMessagePort.sendToMe(member.getKakaoAccessToken(), order, option.getProduct());
     }
 }
