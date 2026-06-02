@@ -51,7 +51,7 @@ class OrderWishCleanupTest {
     void 주문_완료_후_위시리스트_삭제() {
         assertThat(wishRepository.findByMember_IdAndProductId(member.getId(), product.getId())).isPresent();
 
-        orderService.createOrder(member, option.getId(), 1, null);
+        orderService.createOrder(member.getId(), option.getId(), 1, null);
 
         assertThat(wishRepository.findByMember_IdAndProductId(member.getId(), product.getId())).isEmpty();
     }

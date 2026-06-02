@@ -1,0 +1,1 @@
+alter table options add column version bigint default 0 not null;

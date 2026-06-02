@@ -54,9 +54,7 @@ class OrderServiceTransactionTest {
 
     @Test
     void 포인트_부족시_재고_차감_롤백() {
-        Member member = memberRepository.findById(memberId).orElseThrow();
-
-        assertThatThrownBy(() -> orderService.createOrder(member, optionId, 1, null))
+        assertThatThrownBy(() -> orderService.createOrder(memberId, optionId, 1, null))
             .isInstanceOf(IllegalArgumentException.class);
 
         int quantityAfter = optionRepository.findById(optionId).orElseThrow().getQuantity();
