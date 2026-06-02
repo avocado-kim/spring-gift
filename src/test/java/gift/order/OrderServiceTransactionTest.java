@@ -1,4 +1,5 @@
 package gift.order;
+import gift.order.service.KakaoMessagePort;
 import gift.order.service.OrderService;
 
 import gift.category.domain.Category;
@@ -14,9 +15,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 class OrderServiceTransactionTest {
@@ -26,6 +30,7 @@ class OrderServiceTransactionTest {
     @Autowired ProductRepository productRepository;
     @Autowired OptionRepository optionRepository;
     @Autowired MemberRepository memberRepository;
+    @MockitoBean KakaoMessagePort kakaoMessagePort;
 
     private Long categoryId;
     private Long productId;
@@ -58,6 +63,22 @@ class OrderServiceTransactionTest {
             .isInstanceOf(IllegalArgumentException.class);
 
         int quantityAfter = optionRepository.findById(optionId).orElseThrow().getQuantity();
-        assertThat(quantityAfter).isEqualTo(10); // 롤백되어 원래 재고가 유지되어야 한다
+        assertThat(quantityAfter).isEqualTo(10);
+    }
+
+    @Test
+    void 카카오_발송_실패시_주문_롤백() {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        member.chargePoint(10000);
+        member.updateKakaoAccessToken("valid-token");
+        memberRepository.save(member);
+
+        doThrow(new RuntimeException("카카오 API 오류")).when(kakaoMessagePort).sendToMe(any(), any(), any());
+
+        assertThatThrownBy(() -> orderService.createOrder(memberId, optionId, 1, null))
+            .isInstanceOf(RuntimeException.class);
+
+        assertThat(optionRepository.findById(optionId).orElseThrow().getQuantity()).isEqualTo(10);
+        assertThat(memberRepository.findById(memberId).orElseThrow().getPoint()).isEqualTo(10000);
     }
 }
