@@ -31,7 +31,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<?> createOrder(Member member, @Valid @RequestBody OrderRequest request) {
-        var saved = orderService.createOrder(member, request.optionId(), request.quantity(), request.message());
+        var saved = orderService.createOrder(member.getId(), request.optionId(), request.quantity(), request.message());
         return ResponseEntity.created(URI.create("/api/orders/" + saved.id()))
             .body(saved);
     }
