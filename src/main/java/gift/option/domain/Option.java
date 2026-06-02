@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 @Entity
 @Table(name = "options")
@@ -23,6 +24,9 @@ public class Option {
 
     @Column(nullable = false, length = 50)
     private String name;
+
+    @Version
+    private Long version;
 
     @Column(nullable = false)
     private int quantity;
