@@ -30,7 +30,7 @@ public class CategoryService {
 
     public CategoryResponse updateCategory(Long id, CategoryRequest request) {
         Category category = categoryRepository.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("Category not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 카테고리입니다."));
         category.update(request.name(), request.color(), request.imageUrl(), request.description());
         return CategoryResponse.from(categoryRepository.save(category));
     }

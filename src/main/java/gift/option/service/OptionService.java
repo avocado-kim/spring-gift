@@ -24,14 +24,14 @@ public class OptionService {
 
     public List<OptionResponse> getOptions(Long productId) {
         productRepository.findById(productId)
-            .orElseThrow(() -> new NoSuchElementException("Product not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 상품입니다."));
         return optionRepository.findByProductId(productId).stream().map(OptionResponse::from).toList();
     }
 
     public OptionResponse createOption(Long productId, OptionRequest request) {
         validateName(request.name());
         Product product = productRepository.findById(productId)
-            .orElseThrow(() -> new NoSuchElementException("Product not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 상품입니다."));
         if (optionRepository.existsByProductIdAndName(productId, request.name())) {
             throw new IllegalArgumentException("이미 존재하는 옵션명입니다.");
         }
@@ -40,14 +40,14 @@ public class OptionService {
 
     public void deleteOption(Long productId, Long optionId) {
         productRepository.findById(productId)
-            .orElseThrow(() -> new NoSuchElementException("Product not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 상품입니다."));
         if (optionRepository.findByProductId(productId).size() <= 1) {
             throw new IllegalArgumentException("옵션이 1개인 상품은 옵션을 삭제할 수 없습니다.");
         }
         Option option = optionRepository.findById(optionId)
-            .orElseThrow(() -> new NoSuchElementException("Option not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 옵션입니다."));
         if (!option.getProduct().getId().equals(productId)) {
-            throw new NoSuchElementException("Option not found.");
+            throw new NoSuchElementException("존재하지 않는 옵션입니다.");
         }
         optionRepository.delete(option);
     }

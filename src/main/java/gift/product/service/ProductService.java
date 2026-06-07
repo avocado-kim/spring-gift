@@ -40,22 +40,22 @@ public class ProductService {
 
     public ProductResponse getProduct(Long id) {
         return ProductResponse.from(productRepository.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("Product not found.")));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 상품입니다.")));
     }
 
     public ProductResponse createProduct(ProductRequest request) {
         validateName(request.name());
         Category category = categoryRepository.findById(request.categoryId())
-            .orElseThrow(() -> new NoSuchElementException("Category not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 카테고리입니다."));
         return ProductResponse.from(productRepository.save(request.toEntity(category)));
     }
 
     public ProductResponse updateProduct(Long id, ProductRequest request) {
         validateName(request.name());
         Category category = categoryRepository.findById(request.categoryId())
-            .orElseThrow(() -> new NoSuchElementException("Category not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 카테고리입니다."));
         Product product = productRepository.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("Product not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 상품입니다."));
         product.update(request.name(), request.price(), request.imageUrl(), category);
         return ProductResponse.from(productRepository.save(product));
     }

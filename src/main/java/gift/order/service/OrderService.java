@@ -44,9 +44,9 @@ public class OrderService {
     @Transactional
     public OrderResponse createOrder(Long memberId, Long optionId, int quantity, String message) {
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new NoSuchElementException("Member not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
         Option option = optionRepository.findById(optionId)
-            .orElseThrow(() -> new NoSuchElementException("Option not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 옵션입니다."));
 
         option.subtractQuantity(quantity);
         member.deductPoint(option.getProduct().getPrice() * quantity);

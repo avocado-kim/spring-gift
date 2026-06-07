@@ -38,9 +38,9 @@ public class WishService {
 
     public WishResponse addWish(Long memberId, Long productId) {
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new NoSuchElementException("Member not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
         Product product = productRepository.findById(productId)
-            .orElseThrow(() -> new NoSuchElementException("Product not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 상품입니다."));
         if (wishRepository.findByMember_IdAndProductId(memberId, productId).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "이미 추가된 상품입니다.");
         }
@@ -49,7 +49,7 @@ public class WishService {
 
     public void removeWish(Long memberId, Long wishId) {
         Wish wish = wishRepository.findById(wishId)
-            .orElseThrow(() -> new NoSuchElementException("Wish not found."));
+            .orElseThrow(() -> new NoSuchElementException("존재하지 않는 위시입니다."));
         if (!wish.getMemberId().equals(memberId)) {
             throw new ForbiddenException();
         }
