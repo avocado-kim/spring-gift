@@ -19,7 +19,7 @@ public class MemberService {
 
     public TokenResponse register(String email, String password) {
         if (memberRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("Email is already registered.");
+            throw new IllegalArgumentException("이미 가입된 이메일입니다.");
         }
         Member member = memberRepository.save(new Member(email, password));
         return new TokenResponse(jwtProvider.createToken(member.getEmail()));
@@ -27,9 +27,9 @@ public class MemberService {
 
     public TokenResponse login(String email, String password) {
         Member member = memberRepository.findByEmail(email)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
+            .orElseThrow(() -> new IllegalArgumentException("이메일 또는 비밀번호가 올바르지 않습니다."));
         if (member.getPassword() == null || !member.getPassword().equals(password)) {
-            throw new IllegalArgumentException("Invalid email or password.");
+            throw new IllegalArgumentException("이메일 또는 비밀번호가 올바르지 않습니다.");
         }
         return new TokenResponse(jwtProvider.createToken(member.getEmail()));
     }
